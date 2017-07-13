@@ -2,6 +2,7 @@
 #include "Creature.hpp"
 #include "Level.hpp"
 #include "Item.hpp" 
+#include "CreatureDatabase.hpp"
 
 Level* curLevel = NULL;
 Creature* player = NULL;
@@ -11,7 +12,10 @@ int main() {
   player->setPos(10, 10);
   curLevel = new Level();
   curLevel->generate();
+  Creature* thing = new CreatureTest();
   curLevel->addCreature(player);
+  curLevel->addCreature(thing);
+  
   TCODConsole::initRoot(80,50,"libtcod C++ tutorial",false);
   while ( !TCODConsole::isWindowClosed() ) {
     TCOD_key_t key;
@@ -27,6 +31,7 @@ int main() {
     }
     if (curLevel->canMove(playerx, playery))
       player->setPos(playerx, playery);
+    curLevel->takeTurns();
     TCODConsole::root->clear();
     curLevel->show();
     TCODConsole::flush();

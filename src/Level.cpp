@@ -42,6 +42,11 @@ Level::Level(){
   }
 }
 
+void Level::takeTurns(){
+  for (auto &creat : creatures) {
+    creat->takeTurn(this);
+  }
+}
 
 Item * Level::itemAt(int x, int y) {
   if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT))

@@ -7,6 +7,8 @@ class Level;
 
 class Creature {
 private:
+  int strength, dexterity, constitution, intelligence, wisdom, charisma;
+  int hp, maxHp;
   int character;
   TCODColor colour;
   int x, y;
@@ -17,6 +19,7 @@ public:
   void show();
   void getPos(int* rx, int* ry);
   void setPos(int nx, int ny);
+  Creature();
   Creature(int character, TCODColor colour);
 };
 

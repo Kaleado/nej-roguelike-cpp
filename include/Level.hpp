@@ -38,6 +38,7 @@ private:
   std::vector<Creature*> creatures;
   std::vector<Item*> items;
 public:
+  void takeTurns();
   Item* itemAt(int x, int y);
   bool canMove(int x, int y);
   void show();
