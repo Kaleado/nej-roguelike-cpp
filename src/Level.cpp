@@ -62,9 +62,9 @@ void Level::generate(){
     for(int y = 0; y < LEVEL_HEIGHT; y++){
       int num = rand() % 3;
       if (num == 0)
-        terrain[x][y] = new TileWrapper(floor);
-      else
         terrain[x][y] = new TileWrapper(wall);
+      else
+        terrain[x][y] = new TileWrapper(floor);
     }
   }
 }
