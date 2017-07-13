@@ -1,5 +1,6 @@
 #include "libtcod.hpp"
 #include "Creature.hpp"
+#include "Level.hpp"
 
 void Creature::setPos(int nx, int ny){
   this->x = nx;
@@ -18,6 +19,10 @@ void Creature::showAt(int sx, int sy){
 
 void Creature::show(){
   showAt(x, y);
+}
+
+void Creature::takeTurn(Level* lev){
+  return;
 }
 
 Creature::Creature(int character, TCODColor colour){
