@@ -12,6 +12,10 @@ void Creature::getPos(int* rx, int* ry){
     *ry = this->y;
 }
 
+void Creature::pickUp() {
+  
+}
+
 void Creature::showAt(int sx, int sy){
   TCODConsole::root->setChar(sx, sy, character);
   TCODConsole::root->setCharForeground(sx, sy, colour);

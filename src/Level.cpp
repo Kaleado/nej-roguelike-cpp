@@ -1,6 +1,7 @@
 #include "libtcod.hpp"
 #include "Level.hpp"
 #include "Creature.hpp"
+#include "Item.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
@@ -42,6 +43,17 @@ Level::Level(){
 }
 
 
+Item * Level::itemAt(int x, int y) {
+  if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT))
+    return NULL;
+
+  for (auto &it : items) {
+    if (it->getX() == x && it->getY() == y)
+      return it;
+  }
+
+  return NULL;
+}
 
 void Level::show(){
   for(int x = 0; x < LEVEL_WIDTH; x++){
@@ -50,8 +62,12 @@ void Level::show(){
     }
   }
   for(auto &creat : creatures){
-      creat->show();
-    }
+    creat->show();
+  }
+
+  for(auto &it : items){
+    it->show();
+  }
 }
 
 void Level::generate(){
