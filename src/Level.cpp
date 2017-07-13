@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <vector>
 
 TileType::TileType(int character, TCODColor colour, bool passable){
   this->character = character;
@@ -43,16 +44,18 @@ Level::Level(){
 }
 
 
-Item * Level::itemAt(int x, int y) {
+std::vector<Item*>* Level::itemsAt(int x, int y) {
   if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT))
     return NULL;
 
+  std::vector<Item*> * itemsFound = new std::vector<Item*>();
+
   for (auto &it : items) {
     if (it->getX() == x && it->getY() == y)
-      return it;
-  }
+      itemsFound->push_back(it);
+    } 
 
-  return NULL;
+  return itemsFound;
 }
 
 void Level::show(){
@@ -76,11 +79,13 @@ void Level::generate(){
   TileType* floor = new TileType('.', TCODColor::grey, true);
   for(int x = 0; x < LEVEL_WIDTH; x++){
     for(int y = 0; y < LEVEL_HEIGHT; y++){
-      int num = rand() % 3;
-      if (num == 0)
+      int num = rand() % 10;
+      if (num < 3)
         terrain[x][y] = new TileWrapper(wall);
-      else
+      else {
+        //Item* i = new Item('$', TCODColor::yellow, "ytb");
         terrain[x][y] = new TileWrapper(floor);
+      }
     }
   }
 }
@@ -99,4 +104,8 @@ bool Level::canMove(int x, int y) {
 
 void Level::removeCreature(Creature* c){
   creatures.erase(std::remove(creatures.begin(), creatures.end(), c), creatures.end());
+}
+
+void Level::removeItem(Item* it) {
+  items.erase(std::remove(items.begin(), items.end(), it), items.end());
 }

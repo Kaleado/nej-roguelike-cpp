@@ -25,8 +25,10 @@ int main() {
     case TCODK_RIGHT : playerx++; break;
     default:break;
     }
-    if (curLevel->canMove(playerx, playery))
+    if (curLevel->canMove(playerx, playery)) {
       player->setPos(playerx, playery);
+      player->pickup(curLevel);
+    }
     TCODConsole::root->clear();
     curLevel->show();
     TCODConsole::flush();

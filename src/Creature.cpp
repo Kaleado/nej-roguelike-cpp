@@ -13,8 +13,14 @@ void Creature::getPos(int* rx, int* ry){
     *ry = this->y;
 }
 
-void Creature::addItemToInventory(Item* i) {
-  this->inventory.push_back(i);
+void Creature::pickup(Level* lev) {
+  std::vector<Item*> * items = lev->itemsAt(this->x, this->y);
+
+  // Iterate through items, add to inventory and remove from map
+  for (auto &it : *items) {
+    this->inventory.push_back(it);
+    lev->removeItem(it);
+  }
 }
 
 void Creature::showAt(int sx, int sy){

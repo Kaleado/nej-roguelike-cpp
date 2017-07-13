@@ -15,7 +15,7 @@ private:
   std::vector<Item*> inventory;
 public:
   virtual void takeTurn(Level* lev);
-  void addItemToInventory(Item* i);
+  void pickup(Level* lev);
   void showAt(int sx, int sy);
   void show();
   void getPos(int* rx, int* ry);

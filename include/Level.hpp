@@ -38,12 +38,13 @@ private:
   std::vector<Creature*> creatures;
   std::vector<Item*> items;
 public:
-  Item* itemAt(int x, int y);
+  std::vector<Item*> * itemsAt(int x, int y);
   bool canMove(int x, int y);
   void show();
   virtual void generate();
   void addCreature(Creature* c);
   void removeCreature(Creature* c);
+  void removeItem(Item* it);
   Level();
 };
 
