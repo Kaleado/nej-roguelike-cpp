@@ -36,6 +36,7 @@ private:
   TileWrapper* terrain[LEVEL_WIDTH][LEVEL_HEIGHT];
   std::vector<Creature*> creatures;
 public:
+  bool canMove(int x, int y);
   void show();
   virtual void generate();
   void addCreature(Creature* c);

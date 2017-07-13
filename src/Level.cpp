@@ -1,6 +1,7 @@
 #include "libtcod.hpp"
 #include "Level.hpp"
 #include "Creature.hpp"
+#include <cstdlib>
 
 TileType::TileType(int character, TCODColor colour, bool passable){
   this->character = character;
@@ -52,15 +53,28 @@ void Level::show(){
 }
 
 void Level::generate(){
+  srand(10000);
   TileType* wall = new TileType('#', TCODColor::white, false);
   TileType* floor = new TileType('.', TCODColor::grey, true);
   for(int x = 0; x < LEVEL_WIDTH; x++){
     for(int y = 0; y < LEVEL_HEIGHT; y++){
-      terrain[x][y] = new TileWrapper(floor);
+      int num = rand() % 3;
+      if (num == 0)
+        terrain[x][y] = new TileWrapper(floor);
+      else
+        terrain[x][y] = new TileWrapper(wall);
     }
   }
 }
 
 void Level::addCreature(Creature* c){
   creatures.push_back(c);
+}
+
+bool Level::canMove(int x, int y) {
+  if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT))
+    return false;
+  if (! terrain[x][y]->isPassable())
+    return false;
+  return true;
 }
