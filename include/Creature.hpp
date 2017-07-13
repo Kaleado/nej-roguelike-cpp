@@ -2,8 +2,10 @@
 #define CREATURE_HPP
 
 #include "libtcod.hpp"
+#include <vector>
 
 class Level;
+class Item;
 
 class Creature {
 private:
@@ -12,9 +14,10 @@ private:
   int character;
   TCODColor colour;
   int x, y;
+  std::vector<Item*> inventory;
 public:
   virtual void takeTurn(Level* lev);
-  void pickUp();
+  void addItemToInventory(Item* i);
   void showAt(int sx, int sy);
   void show();
   void getPos(int* rx, int* ry);

@@ -1,6 +1,7 @@
 #include "libtcod.hpp"
 #include "Creature.hpp"
 #include "Level.hpp"
+#include "Item.hpp"
 
 void Creature::setPos(int nx, int ny){
   this->x = nx;
@@ -12,7 +13,8 @@ void Creature::getPos(int* rx, int* ry){
     *ry = this->y;
 }
 
-void Creature::pickUp() {
+void Creature::addItemToInventory(Item* i) {
+  this->inventory.push_back(i);
 }
 
 void Creature::showAt(int sx, int sy){
