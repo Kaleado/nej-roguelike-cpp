@@ -69,12 +69,11 @@ void Level::show(){
       terrain[x][y]->showAt(x, y);
     }
   }
-  for(auto &creat : creatures){
-    creat->show();
-  }
-
   for(auto &it : items){
     it->show();
+  }  
+  for(auto &creat : creatures){
+    creat->show();
   }
 }
 
