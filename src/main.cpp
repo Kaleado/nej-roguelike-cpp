@@ -15,7 +15,7 @@ int main() {
   Creature* thing = new CreatureTest();
   curLevel->addCreature(player);
   curLevel->addCreature(thing);
-  
+  thing->setPos(15, 15);
   TCODConsole::initRoot(80,50,"libtcod C++ tutorial",false);
   while ( !TCODConsole::isWindowClosed() ) {
     TCOD_key_t key;

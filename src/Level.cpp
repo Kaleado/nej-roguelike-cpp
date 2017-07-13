@@ -95,7 +95,7 @@ void Level::addCreature(Creature* c){
 }
 
 bool Level::canMove(int x, int y) {
-  if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT))
+  if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT) || y < 0 || x < 0)
     return false;
   if (! terrain[x][y]->isPassable())
     return false;
