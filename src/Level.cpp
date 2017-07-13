@@ -14,6 +14,9 @@ void TileType::showAt(int x, int y){
   TCODConsole::root->setCharForeground(x, y, colour);
 }
 
+bool TileType::getIsPassable() {
+  return this->isPassable;
+}
 
 
 TileWrapper::TileWrapper(TileType* tile){
@@ -24,6 +27,9 @@ void TileWrapper::showAt(int x, int y){
   tile->showAt(x, y);
 }
 
+bool TileWrapper::isPassable() {
+  return this->tile->getIsPassable();
+}
 
 Level::Level(){
   for(int x = 0; x < LEVEL_WIDTH; x++){
