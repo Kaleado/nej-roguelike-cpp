@@ -15,6 +15,7 @@ private:
   int character;
   TCODColor colour;
 public:
+  bool getIsPassable();
   void showAt(int x, int y);
   TileType(int character, TCODColor colour, bool passable);
 };
@@ -25,6 +26,7 @@ class TileWrapper{
 private:
   TileType* tile;
 public:
+  bool isPassable();
   void showAt(int x, int y);
   TileWrapper(TileType* tile);
 };
