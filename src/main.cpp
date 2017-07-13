@@ -1,6 +1,7 @@
 #include "libtcod.hpp"
 #include "Creature.hpp"
 #include "Level.hpp"
+#include "Item.hpp" 
 
 Level* curLevel = NULL;
 Creature* player = NULL;
