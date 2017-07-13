@@ -9,6 +9,7 @@ private:
   TCODColor colour;
   int x, y;
 public:
+  void pickUp();
   void showAt(int sx, int sy);
   void show();
   void getPos(int* rx, int* ry);
