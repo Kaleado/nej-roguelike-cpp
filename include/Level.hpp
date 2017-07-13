@@ -6,8 +6,8 @@
 #include "Item.hpp"
 #include <vector>
 
-#define LEVEL_WIDTH 100
-#define LEVEL_HEIGHT 100
+#define LEVEL_WIDTH 80
+#define LEVEL_HEIGHT 50
 
 //The actual type of tile, e.g. wall, floor, etc.
 class TileType{
