@@ -88,7 +88,10 @@ void Level::generate(){
       if (num < 3)
         terrain[x][y] = new TileWrapper(wall);
       else {
-        //Item* i = new Item('$', TCODColor::yellow, "ytb");
+        if (num == 5) {
+          Item* i = new Item('$', TCODColor::yellow, "ytb");
+          this->items.push_back(i);
+        }
         terrain[x][y] = new TileWrapper(floor);
       }
     }

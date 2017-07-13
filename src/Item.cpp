@@ -3,6 +3,10 @@
 Item::Item(int character, TCODColor colour, std::string name){
   this->character = character;
   this->colour = colour;
+  this->name = name;
+}
+
+void use(Creature* user, Level* level) {
 }
 
 void Item::showAt(int x, int y){

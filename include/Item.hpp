@@ -21,7 +21,7 @@ public:
   void setPos(int x, int y);
   int getY();
   int getX();
-  virtual void use(Creature* user, Level* level) = 0;
+  virtual void use(Creature* user, Level* level);
   Item(int character, TCODColor colour, std::string name);
 };
 
