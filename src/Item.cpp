@@ -24,7 +24,7 @@ int Item::getX() {
   return this->x;
 }
 int Item::getY() {
-  return this->Y;
+  return this->y;
 }
 
 std::string Item::getName(){

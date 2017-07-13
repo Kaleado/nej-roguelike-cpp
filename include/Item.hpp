@@ -2,8 +2,10 @@
 #define ITEM_HPP
 
 #include <string>
-#include "Level.hpp"
 #include "libtcod.hpp"
+
+class Creature;
+class Level;
 
 class Item{
 private:

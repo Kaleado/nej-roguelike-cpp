@@ -12,6 +12,7 @@ private:
   int x, y;
 public:
   virtual void takeTurn(Level* lev);
+  void pickUp();
   void showAt(int sx, int sy);
   void show();
   void getPos(int* rx, int* ry);

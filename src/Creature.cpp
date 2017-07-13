@@ -13,7 +13,6 @@ void Creature::getPos(int* rx, int* ry){
 }
 
 void Creature::pickUp() {
-  
 }
 
 void Creature::showAt(int sx, int sy){
