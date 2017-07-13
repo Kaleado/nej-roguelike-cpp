@@ -36,6 +36,9 @@ void Creature::takeTurn(Level* lev){
   return;
 }
 
+Creature::Creature(){
+}
+
 Creature::Creature(int character, TCODColor colour){
   this->colour = colour;
   this->character = character;

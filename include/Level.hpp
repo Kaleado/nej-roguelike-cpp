@@ -39,6 +39,8 @@ private:
   std::vector<Item*> items;
 public:
   std::vector<Item*> * itemsAt(int x, int y);
+  void takeTurns();
+  Item* itemAt(int x, int y);
   bool canMove(int x, int y);
   void show();
   virtual void generate();
