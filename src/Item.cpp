@@ -6,7 +6,7 @@ Item::Item(int character, TCODColor colour, std::string name){
   this->name = name;
 }
 
-void use(Creature* user, Level* level) {
+void Item::use(Creature* user, Level* level) {
 }
 
 void Item::showAt(int x, int y){
