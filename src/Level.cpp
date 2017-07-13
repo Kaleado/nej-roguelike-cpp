@@ -90,6 +90,7 @@ void Level::generate(){
       else {
         if (num == 5) {
           Item* i = new Item('$', TCODColor::yellow, "ytb");
+          i->setPos(x,y);
           this->items.push_back(i);
         }
         terrain[x][y] = new TileWrapper(floor);
