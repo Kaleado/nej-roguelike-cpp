@@ -3,6 +3,7 @@
 
 #include "libtcod.hpp"
 #include "Creature.hpp"
+#include "Item.hpp"
 #include <vector>
 
 #define LEVEL_WIDTH 100
@@ -35,7 +36,9 @@ class Level{
 private:
   TileWrapper* terrain[LEVEL_WIDTH][LEVEL_HEIGHT];
   std::vector<Creature*> creatures;
+  std::vector<Item*> items;
 public:
+  Item* itemAt(int x, int y);
   bool canMove(int x, int y);
   void show();
   virtual void generate();
