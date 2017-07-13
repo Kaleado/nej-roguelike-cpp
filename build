@@ -1,1 +1,1 @@
-g++ src/*.cpp -o play -Iinclude -L. -ltcod -ltcodxx -Wl,-rpath=. -Wall
+g++ -std=c++11 src/*.cpp -o play -Iinclude -L. -ltcod -ltcodxx -Wl,-rpath=. -Wall

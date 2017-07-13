@@ -37,6 +37,7 @@ public:
   void show();
   virtual void generate();
   void addCreature(Creature* c);
+  void removeCreature(Creature* c);
   Level();
 };
 
