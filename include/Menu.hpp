@@ -3,6 +3,7 @@
 
 #include "libtcod.hpp"
 #include <string>
+#include <vector>
 
 class Menu{
 private:
@@ -16,6 +17,7 @@ private:
 public:
   void shift(int amount);
   void drawMenu();
+  std::vector<std::string> * partition(std::string input);
   void setString(std::string message, int index=-1);
   Menu(int height, int width, int startx, int starty, std::string name);
 };

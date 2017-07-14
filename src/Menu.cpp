@@ -1,6 +1,8 @@
 #include "libtcod.hpp"
 #include "Menu.hpp"
 #include <string>
+#include <vector>
+#include <cmath>
 
 void Menu::drawMenu() {
   TCODConsole::root->setDefaultForeground(TCODColor::red);
@@ -20,6 +22,25 @@ void Menu::shift(int amount) {
       this->content[i] = "";
     }
   }
+}
+
+std::vector<std::string> * Menu::partition(std::string input) {
+  int len = std::ceil((float)input.length() / (float)this->width);
+
+  std::vector<std::string> * part = new std::vector<std::string>;
+
+  for (int i = 0; i < len; i++) {
+    if (i == len - 1) {
+      // Take section remaining
+      part->push_back(input.substr(this->width*i,(this->width + 1)*i ));
+    } else {
+      // Take last remaining characters
+      part->push_back(input.substr(this->width*i,
+                                  this->width*i + input.length() % this->width));
+    }
+  }
+
+  return part;
 }
 
 void Menu::setString(std::string message, int index) {
