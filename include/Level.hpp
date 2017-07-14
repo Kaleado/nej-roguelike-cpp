@@ -6,7 +6,7 @@
 #include "Item.hpp"
 #include <vector>
 
-#define LEVEL_WIDTH 80
+#define LEVEL_WIDTH 100
 #define LEVEL_HEIGHT 50
 
 //The actual type of tile, e.g. wall, floor, etc.
@@ -38,7 +38,7 @@ private:
   std::vector<Creature*> creatures;
   std::vector<Item*> items;
 public:
-  std::vector<Item*> * itemsAt(int x, int y);
+  std::vector<Item*> itemsAt(int x, int y);
   void takeTurns();
   Item* itemAt(int x, int y);
   bool canMove(int x, int y);

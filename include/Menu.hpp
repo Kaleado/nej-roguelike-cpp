@@ -1,11 +1,11 @@
 #ifndef MENU_HPP
-#define LEVEL_HPP
+#define MENU_HPP
 
 #include "libtcod.hpp"
 #include <string>
 
 class Menu{
-private:
+protected:
   std::string name;
   int x, y;
   int width, height;
@@ -15,8 +15,10 @@ private:
   int top;
 public:
   void shift(int amount);
-  void drawMenu();
+  virtual void drawMenu();
   void setString(std::string message, int index=-1);
+  
+  Menu();
   Menu(int height, int width, int startx, int starty, std::string name);
 };
 
