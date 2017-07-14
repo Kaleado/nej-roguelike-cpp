@@ -14,6 +14,7 @@ private:
   std::string * content;
   int top;
 public:
+  void shift(int amount);
   void drawMenu();
   void setString(std::string message, int index=-1);
   Menu(int height, int width, int startx, int starty, std::string name);

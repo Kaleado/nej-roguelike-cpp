@@ -9,6 +9,19 @@ void Menu::drawMenu() {
   }
 }
 
+void Menu::shift(int amount) {
+  for (int i =0 ; i < this->height; i++){
+    if (amount + i < this->height) {
+      // If in bounds, copy the string and erase string copied from
+      this->content[i] = this->content[amount + i];
+      this->content[amount + i ] = "";
+    } else {
+      // If out of bounds, just copy empty string
+      this->content[i] = "";
+    }
+  }
+}
+
 void Menu::setString(std::string message, int index) {
   // If index provided and index in range
   if (index >= 0 && index < this->height) {

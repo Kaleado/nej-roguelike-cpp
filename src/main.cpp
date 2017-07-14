@@ -67,6 +67,7 @@ int main() {
     }
     if(hasActed){
       curLevel->takeTurns();
+      stats->shift(1);
     }
 
     TCODConsole::root->clear();
