@@ -55,6 +55,9 @@ void Menu::setString(std::string message, int index) {
   }
 }
 
+Menu::Menu() {
+}
+
 Menu::Menu(int height, int width, int startx, int starty, std::string name) {
   this->x = startx;
   this->y = starty;

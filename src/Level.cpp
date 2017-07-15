@@ -49,16 +49,15 @@ void Level::takeTurns(){
   }
 }
 
-std::vector<Item*>* Level::itemsAt(int x, int y) {
+std::vector<Item*> Level::itemsAt(int x, int y) {
+  std::vector<Item*> itemsFound;
   if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT))
-    return NULL;
-
-  std::vector<Item*> * itemsFound = new std::vector<Item*>();
+    return itemsFound;
 
   for (auto &it : items) {
     if (it->getX() == x && it->getY() == y)
-      itemsFound->push_back(it);
-    } 
+      itemsFound.push_back(it);
+  } 
 
   return itemsFound;
 }
@@ -96,6 +95,15 @@ void Level::generate(){
       }
     }
   }
+}
+
+Item* Level::itemAt(int x, int y){
+  for(auto& it : items){
+    if(it->getX() == x && it->getY() == y){
+      return it;
+    }
+  }
+  return NULL;
 }
 
 void Level::addCreature(Creature* c){
