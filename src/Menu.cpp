@@ -39,14 +39,14 @@ void Menu::setString(std::string message, int index) {
   // If message too long we partition
   // unsigned cast squelches a warning message
   if (message.length() > (unsigned int) this->width) {
-    //std::vector<std::string> toAdd = Menu::partition(message);
+    std::vector<std::string> toAdd = Menu::partition(message);
     if (index != -1) {
       throw std::invalid_argument
         ("Inserting string into specific index failed:\n string too long");
     }
-    //for (auto &msg : toAdd) {
-    //  this->content.push_back(msg);
-    //}
+    for (auto &msg : toAdd) {
+      this->content.push_back(msg);
+    }
   } else {
     if (index == -1) {
       this->content.push_back(message);
@@ -56,9 +56,22 @@ void Menu::setString(std::string message, int index) {
   }
 
   while (this->content.size() > (unsigned int)this->height) {
+    // Remove messages until the amount of messages we have fits in the window
     this->content.erase(this->content.begin());
   }
 }
+
+void Menu::pushMessage(std::string str){
+  this->content.push_back(str);
+  // Remove the bottom message if we have too many messages in our vector
+  if (this->content.size() > (unsigned int) this->height)
+    this->content.erase(this->content.begin());
+}
+
+void Menu::popMessage(){
+  return this->content.pop_back();
+}
+
 
 Menu::Menu() {
 }

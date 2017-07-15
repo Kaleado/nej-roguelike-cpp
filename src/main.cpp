@@ -3,7 +3,6 @@
 #include "Level.hpp"
 #include "Item.hpp"
 #include "Menu.hpp"
-#include "MenuLog.hpp"
 #include "CreatureDatabase.hpp"
 
 #define WINDOW_WIDTH 120
@@ -25,7 +24,7 @@
 Level* curLevel = NULL;
 Creature* player = NULL;
 Menu* stats = NULL;
-MenuLog* log = NULL;
+Menu* log = NULL;
 
 int main() {
   player = new Creature('@', TCODColor::red);
@@ -37,9 +36,9 @@ int main() {
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
                    "Stats Window");
   stats->setString("Hello, this is a test string");
-  //stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
+  stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
 
-  log = new MenuLog(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
+  log = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
 		    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
                    "Log Window");
   // Set string in default top position, now 0
@@ -49,6 +48,7 @@ int main() {
   log->pushMessage("Stinkiest DOGGO around!");
   // This also resets the default position if the index provided
   // is greater than the current default top position
+
 
   Creature* thing = new CreatureTest();
   curLevel->addCreature(player);

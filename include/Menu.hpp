@@ -23,6 +23,8 @@ public:
   // Sets a string in a given index. If the index is not provided, it is pushed
   // to the bottom of the menu.
   void setString(std::string message, int index=-1);
+  void pushMessage(std::string str);
+  void popMessage();
   Menu();
   Menu(int height, int width, int startx, int starty, std::string name);
 };
