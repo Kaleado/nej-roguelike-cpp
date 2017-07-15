@@ -9,14 +9,14 @@
 #define WINDOW_HEIGHT 80
 
 // Macros for stats windows
-#define STATS_WINDOW_HEIGHT 50
+#define STATS_WINDOW_HEIGHT 80
 #define STATS_WINDOW_WIDTH 20
 #define STATS_WINDOW_START_X 100
 #define STATS_WINDOW_START_Y 0
 
 // Macros for message log window
 #define LOG_WINDOW_HEIGHT 30
-#define LOG_WINDOW_WIDTH 120
+#define LOG_WINDOW_WIDTH 100
 #define LOG_WINDOW_START_X 0
 #define LOG_WINDOW_START_Y 50
 
@@ -35,7 +35,7 @@ int main() {
   stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
                    "Stats Window");
-  stats->setString("Hello, this is a test string");
+  //stats->setString("Hello this is a test string and now it should be substantially long");
   stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
 
   log = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,

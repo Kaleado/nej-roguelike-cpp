@@ -18,7 +18,7 @@ void Menu::drawMenu() {
     }
 
     // Finish off the pane color for the row
-    while (this->width - j >= 0) {
+    while (this->width - j > 0) {
       TCODConsole::root->putCharEx(this->x + j, this->y + i, ' ',
                                    this->textColor,this->backgroundColor);
       j++;
