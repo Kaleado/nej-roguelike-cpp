@@ -36,6 +36,9 @@ int main() {
   stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
                    "Stats Window");
+  stats->setString("Hello, this is a test string");
+  //stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
+
   log = new MenuLog(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
 		    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
                    "Log Window");

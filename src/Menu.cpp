@@ -3,39 +3,30 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <stdexcept>
 
 void Menu::drawMenu() {
   TCODConsole::root->setDefaultForeground(TCODColor::red);
-  for (int i = 0; i < this->height; i++) {
-    TCODConsole::root->print(this->x, this->y + i, this->content[i].c_str());
+  int i = 0;
+  for (auto &msg : this->content) {
+    TCODConsole::root->print(this->x, this->y + i, msg.c_str());
+    i++;
   }
 }
 
-void Menu::shift(int amount) {
-  for (int i =0 ; i < this->height; i++){
-    if (amount + i < this->height) {
-      // If in bounds, copy the string and erase string copied from
-      this->content[i] = this->content[amount + i];
-      this->content[amount + i ] = "";
-    } else {
-      // If out of bounds, just copy empty string
-      this->content[i] = "";
-    }
-  }
-}
 
-std::vector<std::string> * Menu::partition(std::string input) {
+std::vector<std::string> Menu::partition(std::string input) {
   int len = std::ceil((float)input.length() / (float)this->width);
 
-  std::vector<std::string> * part = new std::vector<std::string>;
+  std::vector<std::string> part = std::vector<std::string>();
 
   for (int i = 0; i < len; i++) {
     if (i == len - 1) {
       // Take section remaining
-      part->push_back(input.substr(this->width*i,(this->width + 1)*i ));
+      part.push_back(input.substr(this->width*i,(this->width + 1)*i ));
     } else {
       // Take last remaining characters
-      part->push_back(input.substr(this->width*i,
+      part.push_back(input.substr(this->width*i,
                                   this->width*i + input.length() % this->width));
     }
   }
@@ -44,14 +35,28 @@ std::vector<std::string> * Menu::partition(std::string input) {
 }
 
 void Menu::setString(std::string message, int index) {
-  // If index provided and index in range
-  if (index >= 0 && index < this->height) {
-    this->content[index] = message;
-    if (index > top) top = index + 1;
-  // If index not provided and content not full
-  } else if (this->top < this->height) {
-    this->content[top] = message;
-    this->top++;
+
+  // If message too long we partition
+  // unsigned cast squelches a warning message
+  if (message.length() > (unsigned int) this->width) {
+    //std::vector<std::string> toAdd = Menu::partition(message);
+    if (index != -1) {
+      throw std::invalid_argument
+        ("Inserting string into specific index failed:\n string too long");
+    }
+    //for (auto &msg : toAdd) {
+    //  this->content.push_back(msg);
+    //}
+  } else {
+    if (index == -1) {
+      this->content.push_back(message);
+    } else {
+      this->content.insert(this->content.begin() + index, message);
+    }
+  }
+
+  while (this->content.size() > (unsigned int)this->height) {
+    this->content.erase(this->content.begin());
   }
 }
 
@@ -65,6 +70,6 @@ Menu::Menu(int height, int width, int startx, int starty, std::string name) {
   this->height = height;
   this->name = name;
 
-  this->content = new std::string[height];
-  this->top = 0;
+  // Declare content
+  this->content = std::vector<std::string>();
 }
