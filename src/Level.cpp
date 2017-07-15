@@ -7,15 +7,18 @@
 #include <algorithm>
 #include <vector>
 
-TileType::TileType(int character, TCODColor colour, bool passable){
+TileType::TileType(int character, TCODColor charColor, bool passable,
+                   TCODColor bgColor){
   this->character = character;
-  this->colour = colour;
   this->isPassable = passable;
+  this->charColor = charColor;
+  this->bgColor = bgColor;
 }
 
 void TileType::showAt(int x, int y){
   TCODConsole::root->setChar(x, y, character);
-  TCODConsole::root->setCharForeground(x, y, colour);
+  TCODConsole::root->setCharBackground(x, y, bgColor);
+  TCODConsole::root->setCharForeground(x, y, charColor);
 }
 
 bool TileType::getIsPassable() {

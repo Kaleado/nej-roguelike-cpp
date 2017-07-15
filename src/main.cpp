@@ -40,7 +40,7 @@ int main() {
 
   log = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
 		    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
-                   "Log Window");
+                 "Log Window", TCODColor::black, TCODColor::white);
   // Set string in default top position, now 0
   log->pushMessage("Ur a STINKY doggo!");
   // Now 1
@@ -61,6 +61,7 @@ int main() {
     TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS,&key,NULL);
     int playerx, playery;
     player->getPos(&playerx, &playery);
+
     switch(key.vk) {
     case TCODK_UP : playery--; hasActed = true; break;
     case TCODK_DOWN : playery++; hasActed = true; break;
@@ -75,19 +76,20 @@ int main() {
       break;
     default:break;
     }
+
     if(hasActed){
       curLevel->takeTurns();
       //stats->shift(1);
       if (curLevel->canMove(playerx, playery)) {
-	player->setPos(playerx, playery);
-	std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
-	if(itemsAtFeet.size() > 0){
-	  std::string itemString = "";
-	  for(auto& it : itemsAtFeet){
-	    itemString += it->getName() + " ";
-	  }
-	  log->pushMessage("At your feet: " + itemString);
-	}
+        player->setPos(playerx, playery);
+        std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
+        if(itemsAtFeet.size() > 0){
+          std::string itemString = "";
+          for(auto& it : itemsAtFeet){
+            itemString += it->getName() + " ";
+          }
+          log->pushMessage("At your feet: " + itemString);
+        }
       }
     }
 

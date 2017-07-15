@@ -6,12 +6,36 @@
 #include <stdexcept>
 
 void Menu::drawMenu() {
-  TCODConsole::root->setDefaultForeground(TCODColor::red);
+  TCODConsole::root->setDefaultBackground(this->backgroundColor);
+  TCODConsole::root->setDefaultForeground(this->textColor);
   int i = 0;
   for (auto &msg : this->content) {
-    TCODConsole::root->print(this->x, this->y + i, msg.c_str());
+    int j = 0;
+    for (auto &ch : msg) {
+      TCODConsole::root->putCharEx(this->x + j, this->y + i, ch,
+                                   this->textColor,this->backgroundColor);
+      j++;
+    }
+
+    // Finish off the pane color for the row
+    while (this->width - j >= 0) {
+      TCODConsole::root->putCharEx(this->x + j, this->y + i, ' ',
+                                   this->textColor,this->backgroundColor);
+      j++;
+    }
     i++;
   }
+
+  // Finish off the color for the rest of the pane
+  while (this->height - i >= 0) {
+    for (int j = 0; j < this->width; j++) {
+      TCODConsole::root->putCharEx(this->x + j, this->y + i, ' ',
+                                   this->textColor,this->backgroundColor);
+    }
+    i++;
+  }
+
+
 }
 
 
@@ -76,12 +100,18 @@ void Menu::popMessage(){
 Menu::Menu() {
 }
 
-Menu::Menu(int height, int width, int startx, int starty, std::string name) {
+Menu::Menu(int height, int width, int startx, int starty, std::string name,
+           TCODColor text, TCODColor bg) {
+  // Dimensions
   this->x = startx;
   this->y = starty;
   this->width = width;
   this->height = height;
   this->name = name;
+
+  //Color
+  this->textColor = text;
+  this->backgroundColor = bg;
 
   // Declare content
   this->content = std::vector<std::string>();

@@ -7,6 +7,9 @@
 
 class Menu{
 protected:
+  //TCODConsole colours
+  TCODColor textColor;
+  TCODColor backgroundColor;
   // Name of the panel - Menu, log, stats, etc.
   std::string name;
   // It's starting position on the screen
@@ -26,7 +29,8 @@ public:
   void pushMessage(std::string str);
   void popMessage();
   Menu();
-  Menu(int height, int width, int startx, int starty, std::string name);
+  Menu(int height, int width, int startx, int starty, std::string name,
+       TCODColor text = TCODColor::white, TCODColor bg = TCODColor::black);
 };
 
 #endif

@@ -14,11 +14,13 @@ class TileType{
 private:
   bool isPassable;
   int character;
-  TCODColor colour;
+  TCODColor charColor;
+  TCODColor bgColor;
 public:
   bool getIsPassable();
   void showAt(int x, int y);
-  TileType(int character, TCODColor colour, bool passable);
+  TileType(int character, TCODColor colour, bool passable,
+           TCODColor bgColor = TCODColor::black);
 };
 
 //This class exists so that we can encapsulate things specific only to
