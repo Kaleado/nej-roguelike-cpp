@@ -98,6 +98,10 @@ std::string Creature::attack(int x, int y, Creature* enemy) {
   return status;
 }
 
+std::vector<Item*> Creature::getInventory(){
+  return this->inventory;
+}
+
 void Creature::hpDelta(int dmg) {
   this->hp += dmg;
 }

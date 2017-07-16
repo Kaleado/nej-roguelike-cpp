@@ -4,6 +4,7 @@
 #include "Level.hpp"
 #include "Item.hpp"
 #include "Menu.hpp"
+#include "TargetingSystem.hpp"
 #include "CreatureDatabase.hpp"
 
 #define WINDOW_WIDTH 120
@@ -11,13 +12,13 @@
 
 // Macros for stats windows
 #define STATS_WINDOW_HEIGHT 80
-#define STATS_WINDOW_WIDTH 20
-#define STATS_WINDOW_START_X 100
+#define STATS_WINDOW_WIDTH 30
+#define STATS_WINDOW_START_X 90
 #define STATS_WINDOW_START_Y 0
 
 // Macros for message log window
 #define LOG_WINDOW_HEIGHT 30
-#define LOG_WINDOW_WIDTH 100
+#define LOG_WINDOW_WIDTH 90
 #define LOG_WINDOW_START_X 0
 #define LOG_WINDOW_START_Y 50
 
@@ -38,7 +39,7 @@ int main() {
 
   msgLog = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
 		    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
-                 "Log Window", TCODColor::black, TCODColor::white);
+		    "Log Window", TCODColor::black, TCODColor::white);
   // Set string in default top position, now 0
   msgLog->pushMessage("Ur a STINKY doggo!");
   // Now 1
@@ -46,7 +47,7 @@ int main() {
   msgLog->pushMessage("Stinkiest DOGGO around!");
   // This also resets the default position if the index provided
   // is greater than the current default top position
-
+  targetingSystem = new TargetingSystem();
 
   Creature* thing = new CreatureTest();
   curLevel->addCreature(player);
@@ -55,31 +56,40 @@ int main() {
   TCODConsole::initRoot(WINDOW_WIDTH, WINDOW_HEIGHT,"nej_roguelike",false);
   while ( !TCODConsole::isWindowClosed() ) {
     bool hasActed = false;
-    TCOD_key_t key;
-    TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS,&key,NULL);
     int playerx, playery;
     player->getPos(&playerx, &playery);
-
-    switch(key.vk) {
-    case TCODK_UP : playery--; hasActed = true; break;
-    case TCODK_DOWN : playery++; hasActed = true; break;
-    case TCODK_LEFT : playerx--; hasActed = true; break;
-    case TCODK_RIGHT : playerx++; hasActed = true; break;
-    case TCODK_CHAR:
-      if(key.c == 'g'){
-        //Pickup
-        player->pickup(curLevel);
-        hasActed = true;
-      }
-      else if(key.c == '>'){
-        //Enter
-        curLevel->enterAt(playerx, playery);
-        hasActed = true;
-      }
-      break;
-    default:break;
+    if(targetingSystem->getIsTargeting()){
+      targetingSystem->stillTargeting();
     }
-
+    else {
+      TCOD_key_t key;
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS,&key,NULL);
+      
+      switch(key.vk) {
+      case TCODK_UP : playery--; hasActed = true; break;
+      case TCODK_DOWN : playery++; hasActed = true; break;
+      case TCODK_LEFT : playerx--; hasActed = true; break;
+      case TCODK_RIGHT : playerx++; hasActed = true; break;
+      case TCODK_CHAR: 
+	if(key.c == 'g'){
+	  //Pickup
+	  player->pickup(curLevel);
+	  hasActed = true;
+	}
+	else if(key.c == 'l'){
+	  //Look
+	  targetingSystem->startTargeting();
+	}
+	else if(key.c == '>'){
+	  //Enter
+	  curLevel->enterAt(playerx, playery);
+	  hasActed = true;
+	}
+	break;
+      default:break;
+      }
+    }
+    
     if(hasActed){
       // Check if the player has actually moved
       int cx, cy;
@@ -128,6 +138,13 @@ int main() {
 
     TCODConsole::root->clear();
     curLevel->show();
+    if(targetingSystem->getIsTargeting()){
+      int cx, cy;
+      targetingSystem->getCursorPos(&cx, &cy);
+      TCODConsole::root->setChar(cx, cy, 'X');
+      TCODConsole::root->setCharBackground(cx, cy, TCODColor::orange);
+      TCODConsole::root->setCharForeground(cx, cy, TCODColor::red);
+    }
     stats->drawMenu();
     msgLog->drawMenu();
     TCODConsole::flush();

@@ -28,12 +28,13 @@ public:
   bool isDead();
   void getPos(int* rx, int* ry);
   void setPos(int nx, int ny);
+  std::vector<Item*> getInventory();
   std::string move(int nx, int ny, Level* lvl);
   std::string attack(int x, int y, Creature* enemy);
   Creature();
   Creature(int character, TCODColor colour, std::string name,
-           int str = 5, int dex = 5,
-           int con  = 5, int intel = 5, int wis = 5, int cha = 5,
+           int str = 10, int dex = 10,
+           int con  = 10, int intel = 10, int wis = 10, int cha = 10,
            int maxHP = 10);
 };
 

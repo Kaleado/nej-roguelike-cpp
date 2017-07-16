@@ -28,6 +28,7 @@ public:
   void setString(std::string message, int index=-1);
   void pushMessage(std::string str);
   void popMessage();
+  void clear();
   Menu();
   Menu(int height, int width, int startx, int starty, std::string name,
        TCODColor text = TCODColor::white, TCODColor bg = TCODColor::black);
