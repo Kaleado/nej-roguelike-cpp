@@ -1,4 +1,5 @@
 #include "libtcod.hpp"
+#include "Stairs.hpp"
 #include "Creature.hpp"
 #include "Level.hpp"
 #include "Item.hpp"
@@ -20,31 +21,29 @@
 #define LOG_WINDOW_START_X 0
 #define LOG_WINDOW_START_Y 50
 
-
-Level* curLevel = NULL;
-Creature* player = NULL;
-Menu* stats = NULL;
-Menu* log = NULL;
-
 int main() {
+  srand(time(NULL));
   player = new Creature('@', TCODColor::red, "Player");
   player->setPos(10, 10);
+  Level* otherLevel = new Level();
+  otherLevel->generate();
   curLevel = new Level();
   curLevel->generate();
+  curLevel->setTileType(12, 12, new TileTypeStairs('>', TCODColor::red, true, TCODColor::black, otherLevel, 10, 10));
   // Creating our stats menu
   stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
                    "Stats Window");
   stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
 
-  log = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
+  msgLog = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
 		    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
                  "Log Window", TCODColor::black, TCODColor::white);
   // Set string in default top position, now 0
-  log->pushMessage("Ur a STINKY doggo!");
+  msgLog->pushMessage("Ur a STINKY doggo!");
   // Now 1
   // Set string in specific index, in this case line 4
-  log->pushMessage("Stinkiest DOGGO around!");
+  msgLog->pushMessage("Stinkiest DOGGO around!");
   // This also resets the default position if the index provided
   // is greater than the current default top position
 
@@ -72,6 +71,11 @@ int main() {
         player->pickup(curLevel);
         hasActed = true;
       }
+      else if(key.c == '>'){
+        //Enter
+        curLevel->enterAt(playerx, playery);
+        hasActed = true;
+      }
       break;
     default:break;
     }
@@ -97,7 +101,7 @@ int main() {
         std::string status = player->move(playerx, playery, curLevel);
         if (status != "") {
           // If an event happened during movement
-          log->pushMessage(status);
+          msgLog->pushMessage(status);
         } else {
           // Otherwise, standard behaviour
           std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
@@ -106,7 +110,7 @@ int main() {
             for(auto& it : itemsAtFeet){
               itemString += it->getName() + " ";
             }
-            log->pushMessage("At your feet: " + itemString);
+	    msgLog->pushMessage("At your feet: " + itemString);
           }
         }
       }
@@ -124,7 +128,7 @@ int main() {
     TCODConsole::root->clear();
     curLevel->show();
     stats->drawMenu();
-    log->drawMenu();
+    msgLog->drawMenu();
     TCODConsole::flush();
   }
   return 0;

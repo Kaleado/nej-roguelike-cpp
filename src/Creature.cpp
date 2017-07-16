@@ -2,10 +2,11 @@
 #include "Creature.hpp"
 #include "Level.hpp"
 #include "Item.hpp"
-
 #include <random>
 #include <ctime>
 #include <string>
+
+Creature* player = NULL;
 
 void Creature::setPos(int nx, int ny){
   this->x = nx;

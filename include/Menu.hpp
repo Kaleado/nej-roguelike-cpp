@@ -33,4 +33,7 @@ public:
        TCODColor text = TCODColor::white, TCODColor bg = TCODColor::black);
 };
 
+extern Menu* stats;
+extern Menu* msgLog;
+
 #endif

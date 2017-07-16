@@ -2,6 +2,7 @@
 #define LEVEL_HPP
 
 #include "libtcod.hpp"
+#include "Menu.hpp"
 #include "Creature.hpp"
 #include "Item.hpp"
 #include <vector>
@@ -19,6 +20,7 @@ private:
 public:
   bool getIsPassable();
   void showAt(int x, int y);
+  virtual void enter();
   TileType(int character, TCODColor colour, bool passable,
            TCODColor bgColor = TCODColor::black);
 };
@@ -30,6 +32,8 @@ private:
   TileType* tile;
 public:
   bool isPassable();
+  TileType* getTileType();
+  void setTileType(TileType* tileType);
   void showAt(int x, int y);
   TileWrapper(TileType* tile);
 };
@@ -41,6 +45,7 @@ private:
   std::vector<Item*> items;
 public:
   std::vector<Item*> itemsAt(int x, int y);
+  void setTileType(int x, int y, TileType* tileType);
   Creature* creaturesAt(int x, int y);
   std::vector<std::string> takeTurns();
   Item* itemAt(int x, int y);
@@ -50,7 +55,10 @@ public:
   void addCreature(Creature* c);
   void removeCreature(Creature* c);
   void removeItem(Item* it);
+  void enterAt(int x, int y);
   Level();
 };
+
+extern Level* curLevel;
 
 #endif

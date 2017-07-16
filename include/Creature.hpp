@@ -37,4 +37,6 @@ public:
            int maxHP = 10);
 };
 
+extern Creature* player;
+
 #endif
