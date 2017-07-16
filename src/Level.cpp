@@ -234,6 +234,10 @@ void Level::removeCreature(Creature* c){
   creatures.erase(std::remove(creatures.begin(), creatures.end(), c), creatures.end());
 }
 
+void Level::addItem(Item* it){
+  items.push_back(it);
+}
+
 void Level::removeItem(Item* it) {
   items.erase(std::remove(items.begin(), items.end(), it), items.end());
 }

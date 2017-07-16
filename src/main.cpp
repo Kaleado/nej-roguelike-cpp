@@ -6,6 +6,7 @@
 #include "Menu.hpp"
 #include "TargetingSystem.hpp"
 #include "CreatureDatabase.hpp"
+#include "ItemTest.hpp"
 
 #define WINDOW_WIDTH 120
 #define WINDOW_HEIGHT 80
@@ -31,6 +32,9 @@ int main() {
   curLevel = new Level();
   curLevel->generate();
   curLevel->setTileType(12, 12, new TileTypeStairs('>', TCODColor::red, true, TCODColor::black, otherLevel, 10, 10));
+  ItemTest* dummyItem = new ItemTest();
+  dummyItem->setPos(15, 15);
+  curLevel->addItem(dummyItem);  
   // Creating our stats menu
   stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
@@ -78,7 +82,11 @@ int main() {
 	}
 	else if(key.c == 'l'){
 	  //Look
-	  targetingSystem->startTargeting();
+	  targetingSystem->startTargeting(TARGET_STYLE_LOOK, NULL);
+	}
+	else if(key.c == 't'){
+	  //Use
+	  player->getInventory()[0]->use(player, curLevel);
 	}
 	else if(key.c == '>'){
 	  //Enter

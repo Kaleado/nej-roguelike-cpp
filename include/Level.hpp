@@ -65,6 +65,7 @@ public:
   virtual void generate();
   void addCreature(Creature* c);
   void removeCreature(Creature* c);
+  void addItem(Item* it);
   void removeItem(Item* it);
   void enterAt(int x, int y);
   Level();

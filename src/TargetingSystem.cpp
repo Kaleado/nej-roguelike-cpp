@@ -10,11 +10,17 @@ void TargetingSystem::getCursorPos(int* cx, int* cy){
   *cy = cursorY;
 }
 
+Creature* TargetingSystem::getTarget(){
+  return target;
+}
+
 bool TargetingSystem::getIsTargeting(){
   return isTargeting;
 }
 
-void TargetingSystem::startTargeting(){
+void TargetingSystem::startTargeting(int useStyle, Item* usingItem){
+  this->useStyle = useStyle;
+  this->usingItem = usingItem;
   isTargeting = true;
   player->getPos(&cursorX, &cursorY);
 }
@@ -49,9 +55,24 @@ void TargetingSystem::stillTargeting(){
 
 void TargetingSystem::finishTargeting(){
   isTargeting = false;
+  target = curLevel->creaturesAt(cursorX, cursorY);
+  if(!curLevel->isInFov(cursorX, cursorY)){
+    target = NULL;
+    usingItem = NULL;
+    return;
+  }
+  if(usingItem && useStyle != TARGET_STYLE_LOOK){
+    if(target && useStyle == TARGET_STYLE_ON_CREATURE){
+      usingItem->useOn(player, target, curLevel);
+    }
+    else if(useStyle == TARGET_STYLE_AT_POINT){
+      usingItem->useAtPoint(player, cursorX, cursorY, curLevel);
+    }
+  }
+  usingItem = NULL;
 }
 
-TargetingSystem::TargetingSystem() : isTargeting(false), cursorX(0), cursorY(0) {
+TargetingSystem::TargetingSystem() : isTargeting(false), cursorX(0), cursorY(0), usingItem(NULL), target(NULL) {
 }
 
 TargetingSystem* targetingSystem = NULL;
