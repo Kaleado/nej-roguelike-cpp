@@ -3,6 +3,7 @@
 #include "Creature.hpp"
 #include "Item.hpp"
 #include <cstdlib>
+#include <string>
 #include <ctime>
 #include <algorithm>
 #include <vector>
@@ -46,10 +47,23 @@ Level::Level(){
   }
 }
 
-void Level::takeTurns(){
+std::vector<std::string> Level::takeTurns() {
+  std::vector<std::string> log = std::vector<std::string>();
   for (auto &creat : creatures) {
-    creat->takeTurn(this);
+    if (creat->isDead()){
+      // Remove dead creature
+      this->creatures.erase(
+                            std::remove(this->creatures.begin(),
+                                        this->creatures.end(),
+                                        creat),
+                            this->creatures.end());
+      // Log that the creature died and delete it
+      log.push_back(creat->getName() + " died!" );
+    } else {
+      log.push_back(creat->takeTurn(this));
+    }
   }
+  return log;
 }
 
 std::vector<Item*> Level::itemsAt(int x, int y) {

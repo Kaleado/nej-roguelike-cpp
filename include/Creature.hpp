@@ -20,10 +20,12 @@ private:
   // Functions
   void hpDelta(int dmg);
 public:
-  virtual void takeTurn(Level* lev);
+  virtual std::string takeTurn(Level* lev);
   void pickup(Level* lev);
   void showAt(int sx, int sy);
   void show();
+  std::string getName();
+  bool isDead();
   void getPos(int* rx, int* ry);
   void setPos(int nx, int ny);
   std::string move(int nx, int ny, Level* lvl);

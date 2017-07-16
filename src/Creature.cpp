@@ -46,8 +46,16 @@ void Creature::show(){
   showAt(x, y);
 }
 
-void Creature::takeTurn(Level* lev){
-  return;
+std::string Creature::takeTurn(Level* lev){
+  return "";
+}
+
+std::string Creature::getName() {
+  return this->name;
+}
+
+bool Creature::isDead() {
+  return (this->hp <= 0) ? true : false;
 }
 
 /* Called on the condition that an enemy Creature exists in the square
@@ -112,4 +120,5 @@ Creature::Creature(int character, TCODColor colour, std::string name,
   this->wisdom = wis;
   this->charisma = cha;
   this->maxHp = maxHP;
+  this->hp = maxHP;
 }
