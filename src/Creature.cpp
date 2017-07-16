@@ -28,6 +28,18 @@ void Creature::getPos(int* rx, int* ry){
     *ry = this->y;
 }
 
+int Creature::getHp() {
+  return this->hp;
+}
+
+int Creature::getMaxHp() {
+  return this->maxHp;
+}
+
+std::string Creature::getName() {
+  return this->name;
+}
+
 void Creature::pickup(Level* lev) {
   std::vector<Item*> items = lev->itemsAt(this->x, this->y);
 
@@ -49,10 +61,6 @@ void Creature::show(){
 
 std::string Creature::takeTurn(Level* lev){
   return "";
-}
-
-std::string Creature::getName() {
-  return this->name;
 }
 
 bool Creature::isDead() {
@@ -89,7 +97,8 @@ std::string Creature::attack(int x, int y, Creature* enemy) {
   if (((int) rand() % 100) < 2)
     dmg = dmg*2;
 
-  enemy->hpDelta(dmg);
+  // We take away so we put in negative damage
+  enemy->hpDelta(-dmg);
 
   std::string status = enemy->name + " took " + std::to_string(dmg)
     + " damage from "

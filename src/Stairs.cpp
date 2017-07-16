@@ -5,6 +5,8 @@ void TileTypeStairs::enter(){
   curLevel = this->destinationLevel;
   curLevel->addCreature(player);
   player->setPos(this->destinationX, this->destinationY);
+  msgLog->pushMessage("You walk down the stairs.");
+  curLevel->computeFov();
 }
 
 TileTypeStairs::TileTypeStairs(int character,

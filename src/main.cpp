@@ -35,11 +35,11 @@ int main() {
   stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
                    "Stats Window");
-  stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
+  //stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
 
   msgLog = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
-		    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
-		    "Log Window", TCODColor::black, TCODColor::white);
+                    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
+                    "Log Window", TCODColor::black, TCODColor::white);
   // Set string in default top position, now 0
   msgLog->pushMessage("Ur a STINKY doggo!");
   // Now 1
@@ -120,10 +120,10 @@ int main() {
             for(auto& it : itemsAtFeet){
               itemString += it->getName() + " ";
             }
-	    msgLog->pushMessage("At your feet: " + itemString);
+            msgLog->pushMessage("At your feet: " + itemString);
           }
         }
-	curLevel->computeFov();
+        curLevel->computeFov();
       }
 
       // Other creatures take their turns after the players
@@ -133,6 +133,14 @@ int main() {
       for (auto &msg : otherTurnResults ){
         if (msg == "") continue;
         msgLog->pushMessage(msg);
+      }
+      // Recompute stats window
+      stats->empty();
+      for (auto &cre : curLevel->getCreatures()) {
+        stats->pushMessage(cre->getName() + ": "
+                          + std::to_string(cre->getHp())
+                          + "/"
+                          + std::to_string(cre->getMaxHp()));
       }
     }
 

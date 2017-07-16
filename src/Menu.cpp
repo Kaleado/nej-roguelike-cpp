@@ -37,8 +37,10 @@ void Menu::drawMenu() {
     }
     i++;
   }
+}
 
-
+void Menu::empty() {
+  this->content.clear();
 }
 
 
@@ -99,14 +101,8 @@ void Menu::popMessage(){
   return this->content.pop_back();
 }
 
-
 Menu::Menu() {
 }
-
-void Menu::clear(){
-  this->content = std::vector<std::string>();
-}
-
 
 Menu::Menu(int height, int width, int startx, int starty, std::string name,
            TCODColor text, TCODColor bg) {

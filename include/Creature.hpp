@@ -24,6 +24,8 @@ public:
   void pickup(Level* lev);
   void showAt(int sx, int sy);
   void show();
+  int getHp();
+  int getMaxHp();
   std::string getName();
   bool isDead();
   void getPos(int* rx, int* ry);
@@ -35,7 +37,7 @@ public:
   Creature(int character, TCODColor colour, std::string name,
            int str = 10, int dex = 10,
            int con  = 10, int intel = 10, int wis = 10, int cha = 10,
-           int maxHP = 10);
+           int maxHP = 20);
 };
 
 extern Creature* player;
