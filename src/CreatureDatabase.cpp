@@ -6,7 +6,7 @@ void CreatureTest::takeTurn(Level* lev){
   int charx, chary;
   getPos(&charx, &chary);
   if (lev->canMove(charx+dx, chary+dy)){
-    setPos(charx+dx, chary+dy);
+    move(charx+dx, chary+dy, curLevel);
   }
 }
 
