@@ -113,6 +113,7 @@ int main() {
 	    msgLog->pushMessage("At your feet: " + itemString);
           }
         }
+	curLevel->computeFov();
       }
 
       // Other creatures take their turns after the players

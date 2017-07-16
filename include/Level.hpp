@@ -9,6 +9,7 @@
 
 #define LEVEL_WIDTH 100
 #define LEVEL_HEIGHT 50
+#define FOV_RADIUS 8
 
 //The actual type of tile, e.g. wall, floor, etc.
 class TileType{
@@ -20,6 +21,7 @@ private:
 public:
   bool getIsPassable();
   void showAt(int x, int y);
+  void showHiddenAt(int x, int y);
   virtual void enter();
   TileType(int character, TCODColor colour, bool passable,
            TCODColor bgColor = TCODColor::black);
@@ -30,20 +32,28 @@ public:
 class TileWrapper{
 private:
   TileType* tile;
+  bool isExplored;
 public:
+  bool getIsExplored();
+  void setIsExplored(bool v);
   bool isPassable();
   TileType* getTileType();
   void setTileType(TileType* tileType);
   void showAt(int x, int y);
+  void showHiddenAt(int x, int y);
   TileWrapper(TileType* tile);
 };
 
 class Level{
-private:
+protected:
   TileWrapper* terrain[LEVEL_WIDTH][LEVEL_HEIGHT];
   std::vector<Creature*> creatures;
   std::vector<Item*> items;
 public:
+  bool isInFov(int x, int y) const;
+  bool isExplored(int x, int y) const;
+  void computeFov();
+  TCODMap* map;
   std::vector<Item*> itemsAt(int x, int y);
   void setTileType(int x, int y, TileType* tileType);
   Creature* creaturesAt(int x, int y);

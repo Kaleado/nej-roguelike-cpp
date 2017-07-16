@@ -24,6 +24,12 @@ void TileType::showAt(int x, int y){
   TCODConsole::root->setCharForeground(x, y, charColor);
 }
 
+void TileType::showHiddenAt(int x, int y){
+  TCODConsole::root->setChar(x, y, character);
+  TCODConsole::root->setCharBackground(x, y, TCODColor::black);
+  TCODConsole::root->setCharForeground(x, y, TCODColor::grey);
+}
+
 void TileType::enter(){
   msgLog->pushMessage("You can't enter anything here.");
 }
@@ -34,7 +40,16 @@ bool TileType::getIsPassable() {
 
 
 TileWrapper::TileWrapper(TileType* tile){
+  this->isExplored = false;
   this->tile = tile;
+}
+
+bool TileWrapper::getIsExplored(){
+  return isExplored;
+}
+
+void TileWrapper::setIsExplored(bool v){
+  isExplored = v;
 }
 
 TileType* TileWrapper::getTileType(){
@@ -49,6 +64,10 @@ void TileWrapper::showAt(int x, int y){
   tile->showAt(x, y);
 }
 
+void TileWrapper::showHiddenAt(int x, int y){
+  tile->showHiddenAt(x, y);
+}
+
 bool TileWrapper::isPassable() {
   return this->tile->getIsPassable();
 }
@@ -59,6 +78,21 @@ Level::Level(){
       terrain[x][y] = NULL;
     }
   }
+  map = new TCODMap(LEVEL_WIDTH, LEVEL_HEIGHT);
+}
+
+bool Level::isInFov(int x, int y) const {
+  if(map->isInFov(x, y)){
+    terrain[x][y]->setIsExplored(true);
+    return true;
+  }
+  return false;
+}
+
+void Level::computeFov(){
+  int px, py;
+  player->getPos(&px, &py);
+  map->computeFov(px, py, FOV_RADIUS);
 }
 
 std::vector<std::string> Level::takeTurns() {
@@ -114,19 +148,33 @@ Creature* Level::creaturesAt(int x, int y) {
 void Level::show(){
   for(int x = 0; x < LEVEL_WIDTH; x++){
     for(int y = 0; y < LEVEL_HEIGHT; y++){
-      terrain[x][y]->showAt(x, y);
+      TCODConsole::root->setCharBackground(x, y, TCODColor::black);
+      //  TCODConsole::root->setCharForeground(x, y, charColor);
+      if(isInFov(x, y)){
+	terrain[x][y]->showAt(x, y);
+      }
+      else if(terrain[x][y]->getIsExplored()){
+	terrain[x][y]->showHiddenAt(x, y);
+      }
     }
   }
   for(auto &it : items){
-    it->show();
+    if(isInFov(it->getX(), it->getY())){
+      it->show();
+    }
   }  
   for(auto &creat : creatures){
-    creat->show();
+    int cx, cy;
+    creat->getPos(&cx, &cy);
+    if(isInFov(cx, cy)){
+      creat->show();
+    }
   }
 }
 
 void Level::setTileType(int x, int y, TileType* tileType){
-  this->terrain[y][x]->setTileType(tileType);
+  this->terrain[x][y]->setTileType(tileType);
+  this->map->setProperties(x, y, !tileType->getIsPassable(), !tileType->getIsPassable());
 }
 
 void Level::generate(){
@@ -135,8 +183,10 @@ void Level::generate(){
   for(int x = 0; x < LEVEL_WIDTH; x++){
     for(int y = 0; y < LEVEL_HEIGHT; y++){
       int num = rand() % 10;
-      if (num < 3)
+      if (num < 3){
         terrain[x][y] = new TileWrapper(wall);
+	this->map->setProperties(x, y, false, false);
+      }
       else {
         if (num == 5) {
           Item* i = new Item('$', TCODColor::yellow, "ytb");
@@ -144,13 +194,14 @@ void Level::generate(){
           this->items.push_back(i);
         }
         terrain[x][y] = new TileWrapper(floor);
+	this->map->setProperties(x, y, true, true);
       }
     }
   }
 }
 
 void Level::enterAt(int x, int y){
-  this->terrain[y][x]->getTileType()->enter();
+  this->terrain[x][y]->getTileType()->enter();
   return;
 }
 
