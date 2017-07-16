@@ -50,6 +50,7 @@ protected:
   std::vector<Creature*> creatures;
   std::vector<Item*> items;
 public:
+  std::vector<Creature*> getCreatures();
   bool isInFov(int x, int y) const;
   bool isExplored(int x, int y) const;
   void computeFov();

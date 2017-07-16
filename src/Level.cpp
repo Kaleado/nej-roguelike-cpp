@@ -89,6 +89,10 @@ bool Level::isInFov(int x, int y) const {
   return false;
 }
 
+std::vector<Creature*> Level::getCreatures() {
+  return this->creatures;
+}
+
 void Level::computeFov(){
   int px, py;
   player->getPos(&px, &py);

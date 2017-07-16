@@ -24,6 +24,8 @@ public:
   void pickup(Level* lev);
   void showAt(int sx, int sy);
   void show();
+  int getHp();
+  int getMaxHp();
   std::string getName();
   bool isDead();
   void getPos(int* rx, int* ry);

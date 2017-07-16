@@ -37,8 +37,10 @@ void Menu::drawMenu() {
     }
     i++;
   }
+}
 
-
+void Menu::empty() {
+  this->content.clear();
 }
 
 
