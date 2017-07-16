@@ -5,6 +5,9 @@
 #include <cmath>
 #include <stdexcept>
 
+Menu* stats = NULL;
+Menu* msgLog = NULL;
+
 void Menu::drawMenu() {
   TCODConsole::root->setDefaultBackground(this->backgroundColor);
   TCODConsole::root->setDefaultForeground(this->textColor);

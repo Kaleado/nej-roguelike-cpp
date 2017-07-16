@@ -3,6 +3,8 @@
 #include "Level.hpp"
 #include "Item.hpp"
 
+Creature* player = NULL;
+
 void Creature::setPos(int nx, int ny){
   this->x = nx;
   this->y = ny;

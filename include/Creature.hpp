@@ -26,4 +26,6 @@ public:
   Creature(int character, TCODColor colour);
 };
 
+extern Creature* player;
+
 #endif

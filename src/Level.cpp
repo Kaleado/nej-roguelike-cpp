@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <vector>
 
+Level* curLevel = NULL;
+
 TileType::TileType(int character, TCODColor charColor, bool passable,
                    TCODColor bgColor){
   this->character = character;
@@ -21,6 +23,10 @@ void TileType::showAt(int x, int y){
   TCODConsole::root->setCharForeground(x, y, charColor);
 }
 
+void TileType::enter(){
+  msgLog->pushMessage("You can't enter anything here.");
+}
+
 bool TileType::getIsPassable() {
   return this->isPassable;
 }
@@ -28,6 +34,14 @@ bool TileType::getIsPassable() {
 
 TileWrapper::TileWrapper(TileType* tile){
   this->tile = tile;
+}
+
+TileType* TileWrapper::getTileType(){
+  return this->tile;
+}
+
+void TileWrapper::setTileType(TileType* tileType){
+  this->tile = tileType;
 }
 
 void TileWrapper::showAt(int x, int y){
@@ -79,8 +93,11 @@ void Level::show(){
   }
 }
 
+void Level::setTileType(int x, int y, TileType* tileType){
+  this->terrain[y][x]->setTileType(tileType);
+}
+
 void Level::generate(){
-  srand(time(NULL));
   TileType* wall = new TileType('#', TCODColor::white, false);
   TileType* floor = new TileType('.', TCODColor::grey, true);
   for(int x = 0; x < LEVEL_WIDTH; x++){
@@ -98,6 +115,11 @@ void Level::generate(){
       }
     }
   }
+}
+
+void Level::enterAt(int x, int y){
+  this->terrain[y][x]->getTileType()->enter();
+  return;
 }
 
 Item* Level::itemAt(int x, int y){
