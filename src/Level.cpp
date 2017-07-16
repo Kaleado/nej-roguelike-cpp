@@ -65,6 +65,24 @@ std::vector<Item*> Level::itemsAt(int x, int y) {
   return itemsFound;
 }
 
+Creature* Level::creaturesAt(int x, int y) {
+  // Escape if out of bounds
+  if (!(x < LEVEL_WIDTH) || !(y < LEVEL_HEIGHT))
+    return NULL;
+  if ((x < 0) || (y < 0))
+    return NULL;
+
+  for (auto &cre : creatures){
+    int rx;
+    int ry;
+    cre->getPos(&rx,&ry);
+    if (rx == x && ry == y)
+      return cre;
+  }
+
+  return NULL;
+}
+
 void Level::show(){
   for(int x = 0; x < LEVEL_WIDTH; x++){
     for(int y = 0; y < LEVEL_HEIGHT; y++){

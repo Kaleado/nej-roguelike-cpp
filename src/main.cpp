@@ -27,7 +27,7 @@ Menu* stats = NULL;
 Menu* log = NULL;
 
 int main() {
-  player = new Creature('@', TCODColor::red);
+  player = new Creature('@', TCODColor::red, "Player");
   player->setPos(10, 10);
   curLevel = new Level();
   curLevel->generate();
@@ -35,7 +35,6 @@ int main() {
   stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
                    "Stats Window");
-  //stats->setString("Hello this is a test string and now it should be substantially long");
   stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
 
   log = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
@@ -78,19 +77,26 @@ int main() {
     }
 
     if(hasActed){
-      curLevel->takeTurns();
-      //stats->shift(1);
       if (curLevel->canMove(playerx, playery)) {
-        player->setPos(playerx, playery);
-        std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
-        if(itemsAtFeet.size() > 0){
-          std::string itemString = "";
-          for(auto& it : itemsAtFeet){
-            itemString += it->getName() + " ";
+        std::string status = player->move(playerx, playery, curLevel);
+        if (status != "") {
+          // If an event happened during movement
+          log->pushMessage(status);
+        } else {
+          // Otherwise, standard behaviour
+          std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
+          if(itemsAtFeet.size() > 0){
+            std::string itemString = "";
+            for(auto& it : itemsAtFeet){
+              itemString += it->getName() + " ";
+            }
+            log->pushMessage("At your feet: " + itemString);
           }
-          log->pushMessage("At your feet: " + itemString);
         }
       }
+      // Other creatures take their turns after the players
+      // has been fully processed
+      curLevel->takeTurns();
     }
 
     TCODConsole::root->clear();
