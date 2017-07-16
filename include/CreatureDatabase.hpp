@@ -7,7 +7,7 @@
 
 class CreatureTest : public Creature{
 public:
-  void takeTurn(Level* lev);
+  std::string takeTurn(Level* lev);
   CreatureTest();
 };
 

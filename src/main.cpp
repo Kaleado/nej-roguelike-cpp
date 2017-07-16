@@ -81,7 +81,23 @@ int main() {
     }
 
     if(hasActed){
-      if (curLevel->canMove(playerx, playery)) {
+      // Check if the player has actually moved
+      int cx, cy;
+      player->getPos(&cx, &cy);
+      // If player has not actually moved, just acted
+      if ((cx == playerx && cy == playery)) {
+        // Otherwise, standard behaviour
+        // Might want to pick viewing items?
+        std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
+        if(itemsAtFeet.size() > 0){
+          std::string itemString = "";
+          for(auto& it : itemsAtFeet){
+            itemString += it->getName() + " ";
+          }
+          msgLog->pushMessage("At your feet: " + itemString);
+        }
+      } else if (curLevel->canMove(playerx, playery)) {
+        // Otherwise, if the player is actually moving
         std::string status = player->move(playerx, playery, curLevel);
         if (status != "") {
           // If an event happened during movement
@@ -98,9 +114,15 @@ int main() {
           }
         }
       }
+
       // Other creatures take their turns after the players
       // has been fully processed
-      curLevel->takeTurns();
+      std::vector<std::string> otherTurnResults = curLevel->takeTurns();
+
+      for (auto &msg : otherTurnResults ){
+        if (msg == "") continue;
+        msgLog->pushMessage(msg);
+      }
     }
 
     TCODConsole::root->clear();
