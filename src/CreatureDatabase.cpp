@@ -10,5 +10,5 @@ void CreatureTest::takeTurn(Level* lev){
   }
 }
 
-CreatureTest::CreatureTest() : Creature('$', TCODColor::green) {
+CreatureTest::CreatureTest() : Creature('$', TCODColor::green, "Monster") {
 }

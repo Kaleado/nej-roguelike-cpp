@@ -46,6 +46,7 @@ private:
 public:
   std::vector<Item*> itemsAt(int x, int y);
   void setTileType(int x, int y, TileType* tileType);
+  Creature* creaturesAt(int x, int y);
   void takeTurns();
   Item* itemAt(int x, int y);
   bool canMove(int x, int y);
