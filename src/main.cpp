@@ -94,7 +94,7 @@ int main() {
           for(auto& it : itemsAtFeet){
             itemString += it->getName() + " ";
           }
-          log->pushMessage("At your feet: " + itemString);
+          msgLog->pushMessage("At your feet: " + itemString);
         }
       } else if (curLevel->canMove(playerx, playery)) {
         // Otherwise, if the player is actually moving
@@ -121,7 +121,7 @@ int main() {
 
       for (auto &msg : otherTurnResults ){
         if (msg == "") continue;
-        log->pushMessage(msg);
+        msgLog->pushMessage(msg);
       }
     }
 
