@@ -32,6 +32,7 @@ public:
   void setPos(int x, int y);
   int getY();
   int getX();
+  static Item* generateRandomItem();
   virtual void use(Creature* user, Level* level);
   virtual void useOn(Creature* user, Creature* target, Level* level);
   virtual void useAtPoint(Creature* user, int x, int y, Level* level);

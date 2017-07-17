@@ -104,11 +104,7 @@ std::vector<std::string> Level::takeTurns() {
   for (auto &creat : creatures) {
     if (creat->isDead()){
       // Remove dead creature
-      this->creatures.erase(
-                            std::remove(this->creatures.begin(),
-                                        this->creatures.end(),
-                                        creat),
-                            this->creatures.end());
+      this->removeCreature(creat);
       // Log that the creature died and delete it
       log.push_back(creat->getName() + " died!" );
     } else {
@@ -126,7 +122,7 @@ std::vector<Item*> Level::itemsAt(int x, int y) {
   for (auto &it : items) {
     if (it->getX() == x && it->getY() == y)
       itemsFound.push_back(it);
-  } 
+  }
 
   return itemsFound;
 }
@@ -166,7 +162,7 @@ void Level::show(){
     if(isInFov(it->getX(), it->getY())){
       it->show();
     }
-  }  
+  }
   for(auto &creat : creatures){
     int cx, cy;
     creat->getPos(&cx, &cy);
@@ -182,6 +178,7 @@ void Level::setTileType(int x, int y, TileType* tileType){
 }
 
 void Level::generate(){
+  srand(time(NULL));
   TileType* wall = new TileType('#', TCODColor::white, false);
   TileType* floor = new TileType('.', TCODColor::grey, true);
   for(int x = 0; x < LEVEL_WIDTH; x++){
@@ -189,16 +186,16 @@ void Level::generate(){
       int num = rand() % 10;
       if (num < 3){
         terrain[x][y] = new TileWrapper(wall);
-	this->map->setProperties(x, y, false, false);
+        this->map->setProperties(x, y, false, false);
       }
       else {
         if (num == 5) {
-          Item* i = new Item('$', TCODColor::yellow, "ytb");
+          Item* i = Item::generateRandomItem();
           i->setPos(x,y);
           this->items.push_back(i);
         }
         terrain[x][y] = new TileWrapper(floor);
-	this->map->setProperties(x, y, true, true);
+        this->map->setProperties(x, y, true, true);
       }
     }
   }
