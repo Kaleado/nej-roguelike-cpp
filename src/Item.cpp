@@ -10,7 +10,6 @@ Item::Item(int character, TCODColor colour, std::string name){
 }
 
 Item* Item::generateRandomItem() {
-  srand(time(NULL));
   int type = (rand() % 2*AMOUNT_EQUIPMENT_TYPES);
 
   Item * it = NULL;
