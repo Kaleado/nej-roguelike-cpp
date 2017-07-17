@@ -6,6 +6,7 @@
 #include "Menu.hpp"
 #include "TargetingSystem.hpp"
 #include "CreatureDatabase.hpp"
+#include "ItemTest.hpp"
 
 #define WINDOW_WIDTH 120
 #define WINDOW_HEIGHT 80
@@ -34,6 +35,7 @@ static void init();
 
 int main() {
 
+  // Initialise the whole level
   init();
 
   while ( !TCODConsole::isWindowClosed() ) {
@@ -54,7 +56,7 @@ int main() {
       case TCODK_DOWN : playery++; hasActed = true; break;
       case TCODK_LEFT : playerx--; hasActed = true; break;
       case TCODK_RIGHT : playerx++; hasActed = true; break;
-      case TCODK_CHAR:
+      case TCODK_CHAR: 
         if(key.c == 'g'){
           //Pickup
           player->pickup(curLevel);
@@ -62,7 +64,11 @@ int main() {
         }
         else if(key.c == 'l'){
           //Look
-          targetingSystem->startTargeting();
+          targetingSystem->startTargeting(TARGET_STYLE_LOOK, NULL);
+        }
+        else if(key.c == 't'){
+          //Use
+          player->getInventory()[0]->use(player, curLevel);
         }
         else if(key.c == '>'){
           //Enter
@@ -144,15 +150,16 @@ static void displayStatsWindow() {
 
 static void init() {
   srand(time(NULL));
-  // Set player
   player = new Creature('@', TCODColor::red, "Player");
   player->setPos(10, 10);
   Level* otherLevel = new Level();
   otherLevel->generate();
-  // Set level
   curLevel = new Level();
   curLevel->generate();
   curLevel->setTileType(12, 12, new TileTypeStairs('>', TCODColor::red, true, TCODColor::black, otherLevel, 10, 10));
+  ItemTest* dummyItem = new ItemTest();
+  dummyItem->setPos(15, 15);
+  curLevel->addItem(dummyItem);  
   // Creating our stats menu
   stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
                    STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
