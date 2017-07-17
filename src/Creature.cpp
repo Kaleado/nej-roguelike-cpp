@@ -76,7 +76,6 @@ std::string Creature::attack(int x, int y, Creature* enemy) {
 
   // Random numbers, to give damage some meaningful distribution
   // Some random number based on curr time
-  std::srand(std::time(0));
 
   unsigned int dmg = 0;
 

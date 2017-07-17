@@ -178,7 +178,6 @@ void Level::setTileType(int x, int y, TileType* tileType){
 }
 
 void Level::generate(){
-  srand(time(NULL));
   TileType* wall = new TileType('#', TCODColor::white, false);
   TileType* floor = new TileType('.', TCODColor::grey, true);
   for(int x = 0; x < LEVEL_WIDTH; x++){
