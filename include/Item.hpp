@@ -4,11 +4,14 @@
 #include <string>
 #include "libtcod.hpp"
 
+#define AMOUNT_ATTRIBUTE_TYPES 6
+enum AttributeType {STRENGTH,DEXTERITY,CONSTITUTION,INTELLIGENCE,WISDOM,CHARISMA};
+
 class Creature;
 class Level;
 
 class Item{
-private:
+protected:
   int x;
   int y;
   int character;

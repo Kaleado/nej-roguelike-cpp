@@ -22,90 +22,65 @@
 #define LOG_WINDOW_START_X 0
 #define LOG_WINDOW_START_Y 50
 
+
+/* A function that locates the items at the players feet and displays it to
+ * the stats console
+ */
+
+static void displayItemsAtFeet(int playerx, int playery);
+static void displayStatsWindow();
+static void init();
+
+
 int main() {
-  srand(time(NULL));
-  player = new Creature('@', TCODColor::red, "Player");
-  player->setPos(10, 10);
-  Level* otherLevel = new Level();
-  otherLevel->generate();
-  curLevel = new Level();
-  curLevel->generate();
-  curLevel->setTileType(12, 12, new TileTypeStairs('>', TCODColor::red, true, TCODColor::black, otherLevel, 10, 10));
-  // Creating our stats menu
-  stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
-                   STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
-                   "Stats Window");
-  //stats->setString("This string is over 40 characters in length, which means it must be partitioned in order to fit on the screen!!!!!");
 
-  msgLog = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
-                    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
-                    "Log Window", TCODColor::black, TCODColor::white);
-  // Set string in default top position, now 0
-  msgLog->pushMessage("Ur a STINKY doggo!");
-  // Now 1
-  // Set string in specific index, in this case line 4
-  msgLog->pushMessage("Stinkiest DOGGO around!");
-  // This also resets the default position if the index provided
-  // is greater than the current default top position
-  targetingSystem = new TargetingSystem();
+  init();
 
-  Creature* thing = new CreatureTest();
-  curLevel->addCreature(player);
-  curLevel->addCreature(thing);
-  thing->setPos(15, 15);
-  TCODConsole::initRoot(WINDOW_WIDTH, WINDOW_HEIGHT,"nej_roguelike",false);
   while ( !TCODConsole::isWindowClosed() ) {
     bool hasActed = false;
     int playerx, playery;
     player->getPos(&playerx, &playery);
+
+    // If the targeting system is still acting
     if(targetingSystem->getIsTargeting()){
       targetingSystem->stillTargeting();
     }
     else {
       TCOD_key_t key;
       TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS,&key,NULL);
-      
+
       switch(key.vk) {
       case TCODK_UP : playery--; hasActed = true; break;
       case TCODK_DOWN : playery++; hasActed = true; break;
       case TCODK_LEFT : playerx--; hasActed = true; break;
       case TCODK_RIGHT : playerx++; hasActed = true; break;
-      case TCODK_CHAR: 
-	if(key.c == 'g'){
-	  //Pickup
-	  player->pickup(curLevel);
-	  hasActed = true;
-	}
-	else if(key.c == 'l'){
-	  //Look
-	  targetingSystem->startTargeting();
-	}
-	else if(key.c == '>'){
-	  //Enter
-	  curLevel->enterAt(playerx, playery);
-	  hasActed = true;
-	}
-	break;
+      case TCODK_CHAR:
+        if(key.c == 'g'){
+          //Pickup
+          player->pickup(curLevel);
+          hasActed = true;
+        }
+        else if(key.c == 'l'){
+          //Look
+          targetingSystem->startTargeting();
+        }
+        else if(key.c == '>'){
+          //Enter
+          curLevel->enterAt(playerx, playery);
+          hasActed = true;
+        }
+        break;
       default:break;
       }
     }
-    
+
     if(hasActed){
       // Check if the player has actually moved
       int cx, cy;
       player->getPos(&cx, &cy);
       // If player has not actually moved, just acted
       if ((cx == playerx && cy == playery)) {
-        // Otherwise, standard behaviour
-        // Might want to pick viewing items?
-        std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
-        if(itemsAtFeet.size() > 0){
-          std::string itemString = "";
-          for(auto& it : itemsAtFeet){
-            itemString += it->getName() + " ";
-          }
-          msgLog->pushMessage("At your feet: " + itemString);
-        }
+        displayItemsAtFeet(playerx,playery);
       } else if (curLevel->canMove(playerx, playery)) {
         // Otherwise, if the player is actually moving
         std::string status = player->move(playerx, playery, curLevel);
@@ -113,15 +88,7 @@ int main() {
           // If an event happened during movement
           msgLog->pushMessage(status);
         } else {
-          // Otherwise, standard behaviour
-          std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
-          if(itemsAtFeet.size() > 0){
-            std::string itemString = "";
-            for(auto& it : itemsAtFeet){
-              itemString += it->getName() + " ";
-            }
-            msgLog->pushMessage("At your feet: " + itemString);
-          }
+          displayItemsAtFeet(playerx,playery);
         }
         curLevel->computeFov();
       }
@@ -135,13 +102,7 @@ int main() {
         msgLog->pushMessage(msg);
       }
       // Recompute stats window
-      stats->empty();
-      for (auto &cre : curLevel->getCreatures()) {
-        stats->pushMessage(cre->getName() + ": "
-                          + std::to_string(cre->getHp())
-                          + "/"
-                          + std::to_string(cre->getMaxHp()));
-      }
+      displayStatsWindow();
     }
 
     TCODConsole::root->clear();
@@ -158,4 +119,54 @@ int main() {
     TCODConsole::flush();
   }
   return 0;
+}
+
+static void displayItemsAtFeet(int playerx, int playery) {
+  std::vector<Item*> itemsAtFeet = curLevel->itemsAt(playerx, playery);
+  if(itemsAtFeet.size() > 0){
+    std::string itemString = "";
+    for(auto& it : itemsAtFeet){
+      itemString += it->getName() + " ";
+    }
+    msgLog->pushMessage("At your feet: " + itemString);
+  }
+}
+
+static void displayStatsWindow() {
+  stats->empty();
+  for (auto &cre : curLevel->getCreatures()) {
+    stats->pushMessage(cre->getName() + ": "
+                       + std::to_string(cre->getHp())
+                       + "/"
+                       + std::to_string(cre->getMaxHp()));
+  }
+}
+
+static void init() {
+  srand(time(NULL));
+  // Set player
+  player = new Creature('@', TCODColor::red, "Player");
+  player->setPos(10, 10);
+  Level* otherLevel = new Level();
+  otherLevel->generate();
+  // Set level
+  curLevel = new Level();
+  curLevel->generate();
+  curLevel->setTileType(12, 12, new TileTypeStairs('>', TCODColor::red, true, TCODColor::black, otherLevel, 10, 10));
+  // Creating our stats menu
+  stats = new Menu(STATS_WINDOW_HEIGHT, STATS_WINDOW_WIDTH,
+                   STATS_WINDOW_START_X, STATS_WINDOW_START_Y,
+                   "Stats Window");
+
+  // Create message log
+  msgLog = new Menu(LOG_WINDOW_HEIGHT, LOG_WINDOW_WIDTH,
+                    LOG_WINDOW_START_X, LOG_WINDOW_START_Y,
+                    "Log Window", TCODColor::black, TCODColor::white);
+  targetingSystem = new TargetingSystem();
+
+  Creature* thing = new CreatureTest();
+  curLevel->addCreature(player);
+  curLevel->addCreature(thing);
+  thing->setPos(15, 15);
+  TCODConsole::initRoot(WINDOW_WIDTH, WINDOW_HEIGHT,"nej_roguelike",false);
 }
